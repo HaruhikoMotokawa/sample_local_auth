@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample_local_auth/core/router/app_navigation_bar.dart';
+import 'package:sample_local_auth/presentations/app_locked/screen.dart';
 import 'package:sample_local_auth/presentations/home/screen.dart';
 import 'package:sample_local_auth/presentations/initial/screen.dart';
 import 'package:sample_local_auth/presentations/settings/screen.dart';
@@ -41,6 +42,12 @@ final rootNavigationKey = GlobalKey<NavigatorState>();
     TypedGoRoute<InitialRoute>(
       path: '/initial',
       name: 'initial_screen',
+    ),
+
+    // ロック画面
+    TypedGoRoute<AppLockedRoute>(
+      path: '/locked',
+      name: 'locked_screen',
     ),
   ],
 )
@@ -118,5 +125,14 @@ class InitialRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const InitialScreen();
+  }
+}
+
+class AppLockedRoute extends GoRouteData {
+  const AppLockedRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const AppLockedScreen();
   }
 }

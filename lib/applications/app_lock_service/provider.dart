@@ -8,6 +8,6 @@ AppLockServiceBase appLockService(AppLockServiceRef ref) {
   return AppLockService(ref);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Stream<bool> lockState(LockStateRef ref) =>
     ref.read(appLockServiceProvider).lockState;

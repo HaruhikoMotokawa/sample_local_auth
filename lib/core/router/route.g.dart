@@ -41,6 +41,11 @@ RouteBase get $appShellRoute => ShellRouteData.$route(
           name: 'initial_screen',
           factory: $InitialRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: '/locked',
+          name: 'locked_screen',
+          factory: $AppLockedRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -92,6 +97,24 @@ extension $InitialRouteExtension on InitialRoute {
 
   String get location => GoRouteData.$location(
         '/initial',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $AppLockedRouteExtension on AppLockedRoute {
+  static AppLockedRoute _fromState(GoRouterState state) =>
+      const AppLockedRoute();
+
+  String get location => GoRouteData.$location(
+        '/locked',
       );
 
   void go(BuildContext context) => context.go(location);

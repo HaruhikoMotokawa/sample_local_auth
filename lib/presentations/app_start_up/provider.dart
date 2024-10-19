@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:sample_local_auth/applications/app_lock_service/provider.dart';
 import 'package:sample_local_auth/data/repositories/auth_repository/provider.dart';
 import 'package:sample_local_auth/data/sources/shared_preference.dart';
 
@@ -14,4 +15,7 @@ Future<void> appStartup(AppStartupRef ref) async {
   // authの初期化
   // ignore: avoid_manual_providers_as_generated_provider_dependency
   await ref.read(authRepositoryProvider).init();
+
+  // ロックの初期化
+  await ref.read(appLockServiceProvider).init();
 }

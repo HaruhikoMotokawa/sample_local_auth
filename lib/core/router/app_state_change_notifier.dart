@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sample_local_auth/applications/app_lock_service/provider.dart';
 import 'package:sample_local_auth/core/router/route.dart';
 import 'package:sample_local_auth/data/repositories/auth_repository/provider.dart';
 
@@ -19,8 +20,16 @@ class AppStateChangeNotifier extends ChangeNotifier {
       Future.microtask(notifyListeners);
     });
 
+    // ロック状態を監視し、変更があれば`notifyListeners`を非同期に呼び出す
+    final isLockedSubscription = ref.listen(lockStateProvider, (_, __) {
+      Future.microtask(notifyListeners);
+    });
+
     // このNotifierが破棄されるときに`isLoggedInSubscription`もクリーンアップされるようにする
-    ref.onDispose(isLoggedInSubscription.close);
+    ref.onDispose(() {
+      isLoggedInSubscription.close();
+      isLockedSubscription.close();
+    });
   }
 
   // このクラスが依存するプロバイダを操作するためのレフ
@@ -32,13 +41,17 @@ class AppStateChangeNotifier extends ChangeNotifier {
   /// - `return`: リダイレクト先のパス。リダイレクトが不要な場合は`null`を返します。
   Future<String?> redirect(BuildContext context, GoRouterState state) async {
     final isLoggedIn = await ref.read(isLoggedInProvider.future);
+    final isLocked = await ref.read(lockStateProvider.future);
 
-    // ログイン状態に応じて適切なガードを適用
-    switch (isLoggedIn) {
-      case true:
+    final status = (isLoggedIn, isLocked);
+
+    switch (status) {
+      case (true, false):
         return _authGuard(state);
-      case false:
+      case (false, false):
         return _noAuthGuard(state);
+      case (_, true):
+        return const AppLockedRoute().location;
     }
   }
 
@@ -51,7 +64,8 @@ class AppStateChangeNotifier extends ChangeNotifier {
     GoRouterState state,
   ) async {
     // 初期画面にアクセスしようとした場合、ホーム画面にリダイレクト
-    if (state.fullPath == const InitialRoute().location) {
+    if (state.fullPath == const InitialRoute().location ||
+        state.fullPath == const AppLockedRoute().location) {
       return const HomeRoute().location;
     }
 

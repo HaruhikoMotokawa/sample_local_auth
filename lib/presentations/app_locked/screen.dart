@@ -20,6 +20,7 @@ class AppLockedScreen extends ConsumerWidget {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.lock, size: 100),
             const Gap(40),
