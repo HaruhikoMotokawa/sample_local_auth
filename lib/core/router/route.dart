@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample_local_auth/core/router/app_navigation_bar.dart';
 import 'package:sample_local_auth/presentations/app_locked/screen.dart';
+import 'package:sample_local_auth/presentations/app_route/screen.dart';
 import 'package:sample_local_auth/presentations/home/screen.dart';
 import 'package:sample_local_auth/presentations/initial/screen.dart';
 import 'package:sample_local_auth/presentations/settings/screen.dart';
@@ -65,7 +66,7 @@ class AppShellRoute extends ShellRouteData {
     Widget navigator,
   ) {
     return Scaffold(
-      body: navigator,
+      body: AppRouteScreen(child: navigator),
     );
   }
 }
