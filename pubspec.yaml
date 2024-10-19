@@ -7,13 +7,61 @@ environment:
   sdk: ^3.5.1
 
 dependencies:
+  cupertino_icons: ^1.0.2
+  derry:
+  # dio:
+  # envied:
   flutter:
     sdk: flutter
+  flutter_hooks:
+  # flutter_riverpod:
+  # flutter_appauth:
+  flutter_secure_storage:
+  freezed_annotation:
+  gap:
+  go_router:
+  hooks_riverpod:
+  # isar:
+  json_annotation:
+  logger:
+  # mockito:
+  # path_provider:
+  riverpod_annotation:
+  shared_preferences:
+  # url_launcher:
+  # uuid:
+  very_good_analysis:
+  utility_widgets:
+    git:
+      url: https://github.com/HaruhikoMotokawa/utility_widgets.git
+      ref: v1.0.0
+  local_auth: ^2.3.0
 
 dev_dependencies:
+  build_runner:
+  # envied_generator:
+  flutter_lints:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  freezed:
+  go_router_builder:
+  json_serializable:
+  riverpod_generator:
+  riverpod_lint:
 
 flutter:
+  # assets:
+  #   - assets/
   uses-material-design: true
+
+scripts:
+  # build_runnerを実行して、同じファイル名があれば古いものを削除する
+  build: flutter pub run build_runner build --delete-conflicting-outputs
+  # 保存するたびにbuild_runnerを実行して変更を走らせるようになる
+  watch: fvm dart run build_runner watch -d
+  #  Gradle デーモンプロセスを終了する => ビルドエラーの解消
+  gc: pkill -f '.*GradleDaemon.*'
+  # テストを実行しカバレッジをHTMLで出力してブラウザで開くスクリプト
+  cov: flutter test --coverage && lcov --remove coverage/lcov.info 'lib/**.g.dart' -o coverage/new_lcov.info --ignore-errors unused && genhtml coverage/new_lcov.info -o coverage/html && open coverage/html/index.html
+  # very_good testバージョン -> 最初にdart pub global activate very_good_cliで設定が必要
+  cov_good: very_good test -- --coverage && lcov --remove coverage/lcov.info 'lib/**.g.dart' -o coverage/lcov.info && genhtml coverage/lcov.info -o coverage/html && open coverage/html/index.html
