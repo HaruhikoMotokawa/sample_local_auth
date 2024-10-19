@@ -11,9 +11,6 @@ abstract interface class AuthRepositoryBase {
   /// 初期化
   Future<void> init();
 
-  /// ユーザーのログイン状態を取得
-  Future<bool?> getIsLoggedIn();
-
   /// ユーザーのログイン状態を保存
   Future<void> setIsLoggedIn({required bool value});
 }
@@ -36,7 +33,7 @@ class AuthRepository implements AuthRepositoryBase {
 
   @override
   Future<void> init() async {
-    final isLoggedIn = await getIsLoggedIn();
+    final isLoggedIn = await _getIsLoggedIn();
     if (isLoggedIn == null) {
       return setIsLoggedIn(value: false);
     }
@@ -44,16 +41,15 @@ class AuthRepository implements AuthRepositoryBase {
   }
 
   @override
-  Future<bool?> getIsLoggedIn() async {
-    final pref = await _sharedPreferences;
-    final isLoggedIn = pref.getBool(isLoggedInKey);
-    return isLoggedIn;
-  }
-
-  @override
   Future<void> setIsLoggedIn({required bool value}) async {
     final pref = await _sharedPreferences;
     await pref.setBool(isLoggedInKey, value);
     _authStatusController.add(value);
+  }
+
+  Future<bool?> _getIsLoggedIn() async {
+    final pref = await _sharedPreferences;
+    final isLoggedIn = pref.getBool(isLoggedInKey);
+    return isLoggedIn;
   }
 }

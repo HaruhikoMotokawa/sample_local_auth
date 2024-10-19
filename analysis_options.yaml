@@ -29,6 +29,7 @@ analyzer:
     fixme: ignore
     # switch文でdefaultケースがなくてもエラーとしないようにします。
     no_default_cases: ignore
+    avoid_positional_boolean_parameters: ignore
 
 linter:
   rules:

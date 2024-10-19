@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sample_local_auth/data/repositories/lock_settings_repository/provider.dart';
+import 'package:sample_local_auth/domains/lock_type.dart';
 import 'package:sample_local_auth/presentations/_shared/loading_overlay.dart';
 import 'package:sample_local_auth/presentations/settings/view_model.dart';
 
@@ -11,21 +14,78 @@ class SettingsScreen extends ConsumerWidget {
     final viewModel = ref.watch(settingsViewModelProvider.notifier);
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            // ローディングオーバーレイを表示
-            LoadingOverlay.show(context);
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // ロックを設定するスイッチ
+            Consumer(
+              builder: (context, ref, child) {
+                final isLocked = ref.watch(isLockedProvider).maybeWhen(
+                      orElse: () => false,
+                      data: (value) => value,
+                    );
 
-            // 3秒待つ
-            await Future<void>.delayed(const Duration(seconds: 2));
+                return SwitchListTile(
+                  title: const Text('ロックを設定する'),
+                  value: isLocked,
+                  onChanged: (value) async {
+                    await viewModel.toggleLock(value);
+                  },
+                );
+              },
+            ),
 
-            // ローディングオーバーレイを非表示
-            LoadingOverlay.hide();
+            Consumer(
+              builder: (context, ref, child) {
+                final lockType = ref.watch(lockTypeProvider).maybeWhen(
+                      orElse: () => LockType.button,
+                      data: (value) => value,
+                    );
+                return Column(
+                  children: [
+                    RadioListTile(
+                      title: const Text('ボタンタップで解除する'),
+                      value: LockType.button,
+                      groupValue: lockType,
+                      onChanged: (value) async {
+                        await viewModel.setLockType(LockType.button);
+                      },
+                      // ラジオボタンを右側に配置する
+                      controlAffinity: ListTileControlAffinity.trailing,
+                    ),
+                    RadioListTile(
+                      title: const Text('生体認証で解除する'),
+                      value: LockType.biometric,
+                      groupValue: lockType,
+                      onChanged: (value) async {
+                        await viewModel.setLockType(LockType.biometric);
+                      },
+                      // ラジオボタンを右側に配置する
+                      controlAffinity: ListTileControlAffinity.trailing,
+                    ),
+                  ],
+                );
+              },
+            ),
 
-            // ログアウト処理を実行
-            await viewModel.startLogout();
-          },
-          child: const Text('ログアウト'),
+            const Gap(40),
+            ElevatedButton(
+              onPressed: () async {
+                // ローディングオーバーレイを表示
+                LoadingOverlay.show(context);
+
+                // 3秒待つ
+                await Future<void>.delayed(const Duration(seconds: 2));
+
+                // ローディングオーバーレイを非表示
+                LoadingOverlay.hide();
+
+                // ログアウト処理を実行
+                await viewModel.startLogout();
+              },
+              child: const Text('ログアウト'),
+            ),
+          ],
         ),
       ),
     );
