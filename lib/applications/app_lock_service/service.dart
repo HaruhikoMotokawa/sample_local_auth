@@ -55,6 +55,13 @@ class AppLockService implements AppLockServiceBase {
 
   @override
   Future<void> unlockWithBiometrics() async {
+    // FIXME: このメソッドを使うかは微妙で、できるなら全ての条件を確認したほうがいいかもしれない
+    final isAvailable = await _localAuthRepository.isAvailable;
+    if (isAvailable == false) {
+      logger.i('生体認証が設定されていません。');
+      return;
+    }
+
     try {
       final result = await _localAuthRepository.authenticate();
       if (result == false) return;

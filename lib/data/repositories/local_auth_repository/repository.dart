@@ -4,16 +4,18 @@ import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';
 import 'package:sample_local_auth/core/log/logger.dart';
 import 'package:sample_local_auth/data/sources/local_auth.dart';
+import 'package:sample_local_auth/domains/local_auth_status.dart';
 
 abstract interface class LocalAuthRepositoryBase {
+  //FIXME: statusで賄うことができるので、このゲッターは不要かもしれない
   /// 生体認証が利用可能かどうかを取得する
   Future<bool> get isAvailable;
 
-  /// 生体認証の設定を行なっているかどうかを取得する
-  Future<List<BiometricType>> get isSetting;
-
   /// 生体認証を行う
   Future<bool> authenticate();
+
+  /// 生体認証が使用可能かを返す
+  Future<LocalAuthStatus> get status;
 }
 
 class LocalAuthRepository implements LocalAuthRepositoryBase {
@@ -25,10 +27,6 @@ class LocalAuthRepository implements LocalAuthRepositoryBase {
 
   @override
   Future<bool> get isAvailable => _localAuth.canCheckBiometrics;
-
-  @override
-  Future<List<BiometricType>> get isSetting =>
-      _localAuth.getAvailableBiometrics();
 
   @override
   Future<bool> authenticate() async {
@@ -47,7 +45,7 @@ class LocalAuthRepository implements LocalAuthRepositoryBase {
             );
           } else {
             logger.e(
-              'デバイスが生体認証に対応していません',
+              'デバイスが生体認証に対応していない、または生体認証の登録がされていません。',
               error: e,
               stackTrace: StackTrace.current,
             );
@@ -97,5 +95,31 @@ class LocalAuthRepository implements LocalAuthRepositoryBase {
       }
       return false;
     }
+  }
+
+  @override
+  Future<LocalAuthStatus> get status async {
+    // FIXME: ここの分岐はまだ未完成
+    // 生体認証が利用可能なデバイスか
+    final isAvailable = await _localAuth.canCheckBiometrics;
+    // 何かの認証が登録されているか（主にpinコードか、パスコードが登録されるとtrueになる）
+    final isDeviceSupported = await _localAuth.isDeviceSupported();
+    // 登録されている生体認証のリスト
+    final availableBiometrics = await _localAuth.getAvailableBiometrics();
+
+    logger.d(
+      ' 生体認証が対応可能なデバイスか: $isAvailable,'
+      ' 登録されてるか:$availableBiometrics,'
+      ' デバイスが対応しているか: $isDeviceSupported',
+    );
+    if (availableBiometrics.isEmpty) {
+      return LocalAuthStatus.biometricNotEnrolled;
+    }
+    // FIXME: ここは間違い、これは生体認証に対応していないデバイスの場合である
+    if (isAvailable == false) {
+      return LocalAuthStatus.noAuthenticationMethodAvailable;
+    }
+
+    return LocalAuthStatus.available;
   }
 }

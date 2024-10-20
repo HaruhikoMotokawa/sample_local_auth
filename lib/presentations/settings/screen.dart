@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sample_local_auth/data/repositories/lock_settings_repository/provider.dart';
+import 'package:sample_local_auth/domains/local_auth_status.dart';
 import 'package:sample_local_auth/domains/lock_type.dart';
 import 'package:sample_local_auth/presentations/_shared/loading_overlay.dart';
 import 'package:sample_local_auth/presentations/settings/view_model.dart';
+import 'package:utility_widgets/utility_widgets.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -58,7 +60,19 @@ class SettingsScreen extends ConsumerWidget {
                       value: LockType.biometric,
                       groupValue: lockType,
                       onChanged: (value) async {
-                        await viewModel.setLockType(LockType.biometric);
+                        final status =
+                            await viewModel.setLockType(LockType.biometric);
+                        if (status != LocalAuthStatus.available &&
+                            context.mounted) {
+                          await PlatformDialog.show<void>(
+                            title: const Text('設定エラー'),
+                            content: Text(status.message),
+                            context: context,
+                            actionsBuilder: (context) => [
+                              const AdaptiveAction(text: Text('閉じる')),
+                            ],
+                          );
+                        }
                       },
                       // ラジオボタンを右側に配置する
                       controlAffinity: ListTileControlAffinity.trailing,
