@@ -57,12 +57,7 @@ class AppLockService implements AppLockServiceBase {
   Future<void> unlockWithBiometrics() async {
     try {
       final result = await _localAuthRepository.authenticate();
-      if (result == false) {
-        logger.e(
-          'result: $result, 生体認証に失敗しました',
-          stackTrace: StackTrace.current,
-        );
-      }
+      if (result == false) return;
 
       unlock();
     } catch (e) {

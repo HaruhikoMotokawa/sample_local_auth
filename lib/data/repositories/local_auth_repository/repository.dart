@@ -39,11 +39,19 @@ class LocalAuthRepository implements LocalAuthRepositoryBase {
     } on PlatformException catch (e) {
       switch (e.code) {
         case auth_error.notAvailable:
-          logger.e(
-            'デバイスが生体認証に対応していません',
-            error: e,
-            stackTrace: StackTrace.current,
-          );
+          if (e.message!.contains('Authentication canceled.') == true) {
+            logger.i(
+              'ユーザーが生体認証をキャンセルしました',
+              error: e,
+              stackTrace: StackTrace.current,
+            );
+          } else {
+            logger.e(
+              'デバイスが生体認証に対応していません',
+              error: e,
+              stackTrace: StackTrace.current,
+            );
+          }
         case auth_error.passcodeNotSet:
           logger.e(
             'デバイスにパスコード/PINが設定されていません',
