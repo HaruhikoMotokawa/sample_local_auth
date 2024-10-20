@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:sample_local_auth/core/log/logger.dart';
+import 'package:sample_local_auth/data/repositories/local_auth_repository/provider.dart';
+import 'package:sample_local_auth/data/repositories/local_auth_repository/repository.dart';
 import 'package:sample_local_auth/data/repositories/lock_settings_repository/provider.dart';
 
 abstract interface class AppLockServiceBase {
@@ -13,6 +16,9 @@ abstract interface class AppLockServiceBase {
   /// ロックをかける
   void lock();
 
+  /// 生体認証でロックを解除する
+  Future<void> unlockWithBiometrics();
+
   /// ロックの初期化
   Future<void> init();
 }
@@ -23,6 +29,9 @@ class AppLockService implements AppLockServiceBase {
   final ProviderRef<dynamic> ref;
 
   final _lockStateController = StreamController<bool>();
+
+  LocalAuthRepositoryBase get _localAuthRepository =>
+      ref.read(localAuthRepositoryProvider);
 
   @override
   Stream<bool> get lockState => _lockStateController.stream;
@@ -42,5 +51,22 @@ class AppLockService implements AppLockServiceBase {
     final lockSettingsRepository = ref.read(lockSettingsRepositoryProvider);
     final isLocked = await lockSettingsRepository.getIsLocked();
     _lockStateController.add(isLocked);
+  }
+
+  @override
+  Future<void> unlockWithBiometrics() async {
+    try {
+      final result = await _localAuthRepository.authenticate();
+      if (result == false) {
+        logger.e(
+          'result: $result, 生体認証に失敗しました',
+          stackTrace: StackTrace.current,
+        );
+      }
+
+      unlock();
+    } catch (e) {
+      logger.e('原因不明のエラー', error: e, stackTrace: StackTrace.current);
+    }
   }
 }

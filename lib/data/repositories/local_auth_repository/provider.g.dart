@@ -1,27 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'view_model.dart';
+part of 'provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appLockedViewModelHash() =>
-    r'0f32a8616641b6953972d36df2662594371952e6';
+String _$localAuthRepositoryHash() =>
+    r'98547eecc31bb1fdda00abd91eee5e7d64cc8b41';
 
-/// See also [AppLockedViewModel].
-@ProviderFor(AppLockedViewModel)
-final appLockedViewModelProvider =
-    NotifierProvider<AppLockedViewModel, void>.internal(
-  AppLockedViewModel.new,
-  name: r'appLockedViewModelProvider',
+/// See also [localAuthRepository].
+@ProviderFor(localAuthRepository)
+final localAuthRepositoryProvider = Provider<LocalAuthRepositoryBase>.internal(
+  localAuthRepository,
+  name: r'localAuthRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$appLockedViewModelHash,
+      : _$localAuthRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$AppLockedViewModel = Notifier<void>;
+typedef LocalAuthRepositoryRef = ProviderRef<LocalAuthRepositoryBase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

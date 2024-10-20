@@ -39,9 +39,9 @@ class LockSettingsRepository implements LockSettingsRepositoryBase {
   Future<SharedPreferences> get _sharedPreferences =>
       ref.read(sharedPreferencesProvider.future);
 
-  final _lockStateController = StreamController<bool>();
+  final _lockStateController = StreamController<bool>.broadcast();
 
-  final _lockTypeController = StreamController<LockType>();
+  final _lockTypeController = StreamController<LockType>.broadcast();
 
   @override
   Stream<bool> watchIsLocked() async* {

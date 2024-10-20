@@ -30,8 +30,8 @@ class AppLockedScreen extends ConsumerWidget {
                   child: const Text('ボタンタップで解除する'),
                 ),
               LockType.biometric => ElevatedButton(
+                  onPressed: viewModel.unlockWithBiometrics,
                   child: const Text('生体認証で解除する'),
-                  onPressed: () {},
                 ),
             },
           ],
