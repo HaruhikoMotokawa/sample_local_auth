@@ -44,8 +44,7 @@ class LocalAuthRepository implements LocalAuthRepositoryBase {
       ' 登録されてるか:$availableBiometrics,'
       ' 認証系の登録を何かしているか？: $isDeviceSupported',
     );
-    final verifyStatus = (isDeviceSupported, hasBiometrics);
-    switch (verifyStatus) {
+    switch ((isDeviceSupported, hasBiometrics)) {
       case (true, true):
         return LocalAuthStatus.available;
       case (true, false):
