@@ -11,11 +11,6 @@ enum LocalAuthStatus {
   /// デバイスが生体認証やPIN、パスコードなどの認証手段を一切サポートしていない
   noAuthenticationMethodAvailable(
     '生体認証やPIN、パスコードなどの登録がされていません。設定アプリで登録してください。',
-  ),
-
-  /// 生体認証が利用可能なデバイスではない
-  biometricNotSupported(
-    'このデバイスでは生体認証はサポートされていません。',
   );
 
   const LocalAuthStatus(this.message);
