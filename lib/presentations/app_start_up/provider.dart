@@ -1,3 +1,4 @@
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sample_local_auth/applications/app_lock_service/provider.dart';
 import 'package:sample_local_auth/data/repositories/auth_repository/provider.dart';
@@ -6,7 +7,7 @@ import 'package:sample_local_auth/data/sources/shared_preference.dart';
 part 'provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<void> appStartup(AppStartupRef ref) async {
+Future<void> appStartup(Ref ref) async {
   // アプリ起動前に初期化したい処理を書く
 
   // sharedPreferencesを初期化

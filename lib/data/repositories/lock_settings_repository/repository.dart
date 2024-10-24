@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sample_local_auth/data/sources/shared_preference.dart';
-import 'package:sample_local_auth/domains/lock_type.dart';
+import 'package:sample_local_auth/domains/unlock_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class LockSettingsRepositoryBase {
@@ -10,7 +10,7 @@ abstract interface class LockSettingsRepositoryBase {
   Stream<bool> watchIsLocked();
 
   /// ロックの種類を監視する
-  Stream<LockType> watchLockType();
+  Stream<UnlockType> watchLockType();
 
   /// ロックの状態を保存する
   Future<void> setIsLocked(bool isLocked);
@@ -19,16 +19,16 @@ abstract interface class LockSettingsRepositoryBase {
   Future<bool> getIsLocked();
 
   /// ロックの種類を保存する
-  Future<void> setLockType(LockType type);
+  Future<void> setLockType(UnlockType type);
 
   /// ロックの種類を取得する
-  Future<LockType> getLockType();
+  Future<UnlockType> getLockType();
 }
 
 class LockSettingsRepository implements LockSettingsRepositoryBase {
   LockSettingsRepository(this.ref);
 
-  final ProviderRef<dynamic> ref;
+  final Ref ref;
 
   /// ロックの状態のキー
   static const isLockedKey = 'isLocked';
@@ -41,7 +41,7 @@ class LockSettingsRepository implements LockSettingsRepositoryBase {
 
   final _lockStateController = StreamController<bool>.broadcast();
 
-  final _lockTypeController = StreamController<LockType>.broadcast();
+  final _lockTypeController = StreamController<UnlockType>.broadcast();
 
   @override
   Stream<bool> watchIsLocked() async* {
@@ -51,7 +51,7 @@ class LockSettingsRepository implements LockSettingsRepositoryBase {
   }
 
   @override
-  Stream<LockType> watchLockType() async* {
+  Stream<UnlockType> watchLockType() async* {
     yield await getLockType();
 
     yield* _lockTypeController.stream;
@@ -75,17 +75,17 @@ class LockSettingsRepository implements LockSettingsRepositoryBase {
   }
 
   @override
-  Future<LockType> getLockType() async {
+  Future<UnlockType> getLockType() async {
     final pref = await _sharedPreferences;
     final typeIndex = pref.getInt(lockTypeKey);
-    if (typeIndex != null) return LockType.values[typeIndex];
+    if (typeIndex != null) return UnlockType.values[typeIndex];
 
-    await setLockType(LockType.button);
-    return LockType.button;
+    await setLockType(UnlockType.button);
+    return UnlockType.button;
   }
 
   @override
-  Future<void> setLockType(LockType type) async {
+  Future<void> setLockType(UnlockType type) async {
     final pref = await _sharedPreferences;
     await pref.setInt(lockTypeKey, type.index);
     _lockTypeController.add(type);

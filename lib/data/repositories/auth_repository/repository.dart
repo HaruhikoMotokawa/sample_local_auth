@@ -18,7 +18,7 @@ abstract interface class AuthRepositoryBase {
 class AuthRepository implements AuthRepositoryBase {
   AuthRepository(this.ref);
 
-  final ProviderRef<dynamic> ref;
+  final Ref ref;
 
   /// ログイン状態のキー
   static const isLoggedInKey = 'isLoggedIn';

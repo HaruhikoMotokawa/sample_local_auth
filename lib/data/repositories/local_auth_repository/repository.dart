@@ -21,7 +21,7 @@ abstract interface class LocalAuthRepositoryBase {
 class LocalAuthRepository implements LocalAuthRepositoryBase {
   LocalAuthRepository(this.ref);
 
-  final ProviderRef<dynamic> ref;
+  final Ref ref;
 
   LocalAuthentication get _localAuth => ref.read(localAuthenticationProvider);
 

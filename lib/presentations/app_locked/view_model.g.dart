@@ -7,7 +7,7 @@ part of 'view_model.dart';
 // **************************************************************************
 
 String _$appLockedViewModelHash() =>
-    r'0f32a8616641b6953972d36df2662594371952e6';
+    r'e6d5d9f9c70a57708302cb2978da2ba0769cf102';
 
 /// See also [AppLockedViewModel].
 @ProviderFor(AppLockedViewModel)

@@ -33,7 +33,7 @@ class AppStateChangeNotifier extends ChangeNotifier {
   }
 
   // このクラスが依存するプロバイダを操作するためのレフ
-  final ChangeNotifierProviderRef<AppStateChangeNotifier> ref;
+  final Ref<AppStateChangeNotifier> ref;
 
   /// ルート遷移時に呼び出され、リダイレクト先のパスを返す非同期メソッド
   ///

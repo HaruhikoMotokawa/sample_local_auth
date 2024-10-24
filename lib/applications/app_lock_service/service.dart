@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sample_local_auth/core/log/logger.dart';
 import 'package:sample_local_auth/data/repositories/local_auth_repository/provider.dart';
 import 'package:sample_local_auth/data/repositories/local_auth_repository/repository.dart';
@@ -26,7 +26,7 @@ abstract interface class AppLockServiceBase {
 class AppLockService implements AppLockServiceBase {
   AppLockService(this.ref);
 
-  final ProviderRef<dynamic> ref;
+  final Ref ref;
 
   final _lockStateController = StreamController<bool>();
 

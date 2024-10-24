@@ -3,7 +3,7 @@ import 'package:sample_local_auth/data/repositories/auth_repository/provider.dar
 import 'package:sample_local_auth/data/repositories/local_auth_repository/provider.dart';
 import 'package:sample_local_auth/data/repositories/lock_settings_repository/provider.dart';
 import 'package:sample_local_auth/domains/local_auth_status.dart';
-import 'package:sample_local_auth/domains/lock_type.dart';
+import 'package:sample_local_auth/domains/unlock_type.dart';
 
 part 'view_model.g.dart';
 
@@ -26,10 +26,10 @@ class SettingsViewModel extends _$SettingsViewModel {
   }
 
   /// ロックの種類を設定する
-  Future<LocalAuthStatus> setLockType(LockType type) async {
+  Future<LocalAuthStatus> setLockType(UnlockType type) async {
     final localAuth = ref.read(localAuthRepositoryProvider);
     final status = await localAuth.status;
-    if (type == LockType.biometric && status != LocalAuthStatus.available) {
+    if (type == UnlockType.biometric && status != LocalAuthStatus.available) {
       return status;
     }
 

@@ -1,5 +1,5 @@
 /// ロック解除方法
-enum LockType {
+enum UnlockType {
   /// ボタンタップで解除
   button,
 

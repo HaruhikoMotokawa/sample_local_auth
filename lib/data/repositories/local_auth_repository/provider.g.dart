@@ -7,7 +7,7 @@ part of 'provider.dart';
 // **************************************************************************
 
 String _$localAuthRepositoryHash() =>
-    r'98547eecc31bb1fdda00abd91eee5e7d64cc8b41';
+    r'39c2e86dc965ba6f8737b04501067f111dada0e2';
 
 /// See also [localAuthRepository].
 @ProviderFor(localAuthRepository)

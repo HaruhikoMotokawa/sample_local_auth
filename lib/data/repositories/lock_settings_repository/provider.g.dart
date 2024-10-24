@@ -37,11 +37,11 @@ final isLockedProvider = AutoDisposeStreamProvider<bool>.internal(
 );
 
 typedef IsLockedRef = AutoDisposeStreamProviderRef<bool>;
-String _$lockTypeHash() => r'47a416a58ba1fb912dcca24728ec1ff6232f530b';
+String _$lockTypeHash() => r'1be4f6dc0f87ca9bcf0a7f0bce50cdcb08d446ef';
 
 /// See also [lockType].
 @ProviderFor(lockType)
-final lockTypeProvider = AutoDisposeStreamProvider<LockType>.internal(
+final lockTypeProvider = AutoDisposeStreamProvider<UnlockType>.internal(
   lockType,
   name: r'lockTypeProvider',
   debugGetCreateSourceHash:
@@ -50,6 +50,6 @@ final lockTypeProvider = AutoDisposeStreamProvider<LockType>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef LockTypeRef = AutoDisposeStreamProviderRef<LockType>;
+typedef LockTypeRef = AutoDisposeStreamProviderRef<UnlockType>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

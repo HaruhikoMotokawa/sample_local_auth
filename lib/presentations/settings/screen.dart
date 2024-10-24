@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sample_local_auth/data/repositories/lock_settings_repository/provider.dart';
 import 'package:sample_local_auth/domains/local_auth_status.dart';
-import 'package:sample_local_auth/domains/lock_type.dart';
+import 'package:sample_local_auth/domains/unlock_type.dart';
 import 'package:sample_local_auth/presentations/_shared/loading_overlay.dart';
 import 'package:sample_local_auth/presentations/settings/view_model.dart';
 import 'package:utility_widgets/utility_widgets.dart';
@@ -40,28 +40,28 @@ class SettingsScreen extends ConsumerWidget {
             Consumer(
               builder: (context, ref, child) {
                 final lockType = ref.watch(lockTypeProvider).maybeWhen(
-                      orElse: () => LockType.button,
+                      orElse: () => UnlockType.button,
                       data: (value) => value,
                     );
                 return Column(
                   children: [
                     RadioListTile(
                       title: const Text('ボタンタップで解除する'),
-                      value: LockType.button,
+                      value: UnlockType.button,
                       groupValue: lockType,
                       onChanged: (value) async {
-                        await viewModel.setLockType(LockType.button);
+                        await viewModel.setLockType(UnlockType.button);
                       },
                       // ラジオボタンを右側に配置する
                       controlAffinity: ListTileControlAffinity.trailing,
                     ),
                     RadioListTile(
                       title: const Text('生体認証で解除する'),
-                      value: LockType.biometric,
+                      value: UnlockType.biometric,
                       groupValue: lockType,
                       onChanged: (value) async {
                         final status =
-                            await viewModel.setLockType(LockType.biometric);
+                            await viewModel.setLockType(UnlockType.biometric);
                         if (status != LocalAuthStatus.available &&
                             context.mounted) {
                           await PlatformDialog.show<void>(

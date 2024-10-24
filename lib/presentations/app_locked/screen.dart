@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sample_local_auth/data/repositories/lock_settings_repository/provider.dart';
-import 'package:sample_local_auth/domains/lock_type.dart';
+import 'package:sample_local_auth/domains/unlock_type.dart';
 import 'package:sample_local_auth/presentations/app_locked/view_model.dart';
 import 'package:utility_widgets/utility_widgets.dart';
 
@@ -13,8 +13,8 @@ class AppLockedScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.watch(appLockedViewModelProvider.notifier);
 
-    final lockType = ref.watch(lockTypeProvider).maybeWhen(
-          orElse: () => LockType.button,
+    final unlockType = ref.watch(lockTypeProvider).maybeWhen(
+          orElse: () => UnlockType.button,
           data: (value) => value,
         );
 
@@ -25,12 +25,12 @@ class AppLockedScreen extends ConsumerWidget {
           children: [
             const Icon(Icons.lock, size: 100),
             const Gap(40),
-            switch (lockType) {
-              LockType.button => ElevatedButton(
+            switch (unlockType) {
+              UnlockType.button => ElevatedButton(
                   onPressed: viewModel.unlock,
                   child: const Text('ボタンタップで解除する'),
                 ),
-              LockType.biometric => ElevatedButton(
+              UnlockType.biometric => ElevatedButton(
                   onPressed: () async {
                     // FIXME: このメソッドを使うかは微妙で、できるなら全ての条件を確認したほうがいいかもしれない
                     final result = await viewModel.checkBiometrics();

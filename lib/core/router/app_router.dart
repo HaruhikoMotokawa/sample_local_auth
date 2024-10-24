@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_manual_providers_as_generated_provider_dependency
 
 import 'package:go_router/go_router.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sample_local_auth/core/router/app_state_change_notifier.dart';
 import 'package:sample_local_auth/core/router/route.dart';
@@ -8,7 +9,7 @@ import 'package:sample_local_auth/core/router/route.dart';
 part 'app_router.g.dart';
 
 @Riverpod(keepAlive: true)
-GoRouter appRouter(AppRouterRef ref) {
+GoRouter appRouter(Ref ref) {
   return GoRouter(
     // アプリケーション全体のナビゲーションを管理するためのキーを設定
     navigatorKey: rootNavigationKey,
